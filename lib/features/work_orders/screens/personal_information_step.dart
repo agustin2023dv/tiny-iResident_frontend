@@ -20,7 +20,7 @@ class PersonalInformationStep extends ConsumerWidget {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              const StepIndicator(),
+              const StepIndicator(currentStep: 1),
               const SizedBox(height: 24),
               const Align(
                 alignment: Alignment.centerLeft,
@@ -113,7 +113,7 @@ class PersonalInformationStep extends ConsumerWidget {
 }
 
 class StepIndicator extends StatelessWidget {
-  const StepIndicator({super.key});
+  const StepIndicator({super.key, required int currentStep});
 
   @override
   Widget build(BuildContext context) {

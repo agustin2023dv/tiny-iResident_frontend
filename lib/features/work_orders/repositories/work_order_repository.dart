@@ -1,5 +1,6 @@
-import 'dart:io';
+// lib/features/work_order/repositories/work_order_repository.dart
 
+import 'dart:io';
 import '../services/work_order_api_service.dart';
 
 class WorkOrderRepository {
@@ -7,15 +8,21 @@ class WorkOrderRepository {
 
   WorkOrderRepository(this.api);
 
-  Future<void> submitWorkOrder(
-    String title,
-    String description, [
-    String? imagePath,
-  ]) {
+  Future<void> submitWorkOrder({
+    required String jobType,
+    required String areaType,
+    required String areaName,
+    required String description,
+    required bool permissionToEnter,
+    File? imageFile,
+  }) {
     return api.createWorkOrder(
-      title: title,
+      jobType: jobType,
+      areaType: areaType,
+      areaName: areaName,
       description: description,
-      imageFile: imagePath != null ? File(imagePath) : null,
+      permissionToEnter: permissionToEnter,
+      imageFile: imageFile,
     );
   }
 

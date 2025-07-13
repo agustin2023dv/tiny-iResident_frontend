@@ -4,32 +4,80 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:tinyiresidentfrontend/core/config/dio_client.dart';
 import 'package:tinyiresidentfrontend/features/work_orders/models/personal_info_model.dart';
+import 'package:tinyiresidentfrontend/core/utils/secure_storage.dart';
 
 class WorkOrderApiService {
+  final SecureStorage _secureStorage = SecureStorage();
+
+  Future<Options> _authHeaders() async {
+    final token = await _secureStorage.getAccessToken();
+    return Options(
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+  }
+
   Future<PersonalInfo> fetchPersonalInfo() async {
-    final response = await dio.get('/work-orders/personal-info');
-    return PersonalInfo.fromJson(response.data);
+    try {
+      final response = await dio.get(
+        '/work-orders/personal-info',
+        options: await _authHeaders(),
+      );
+      return PersonalInfo.fromJson(response.data);
+    } on DioException catch (e) {
+      throw Exception('Failed to fetch personal info: ${e.message}');
+    }
   }
 
   Future<Response> createWorkOrder({
-    required String title,
+    required String areaType,
+    required String areaName,
+    required String jobType,
     required String description,
+    required bool permissionToEnter,
     File? imageFile,
   }) async {
-    final formData = FormData.fromMap({
-      'title': title,
-      'description': description,
-      if (imageFile != null)
-        'image': await MultipartFile.fromFile(
-          imageFile.path,
-          filename: imageFile.path.split('/').last,
-        ),
-    });
+    try {
+      final formData = FormData.fromMap({
+        'area_type': areaType,
+        'area_name': areaName,
+        'job_type': jobType,
+        'description': description,
+        'permission_to_enter': permissionToEnter,
+        if (imageFile != null)
+          'image': await MultipartFile.fromFile(
+            imageFile.path,
+            filename: imageFile.path.split('/').last,
+          ),
+      });
 
-    return dio.post('/work-orders/', data: formData);
+      final token = await _secureStorage.getAccessToken();
+
+      return await dio.post(
+        '/work-orders/',
+        data: formData,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'multipart/form-data',
+          },
+        ),
+      );
+    } on DioException catch (e) {
+      throw Exception('Failed to submit work order: ${e.message}');
+    }
   }
 
   Future<Response> getUserWorkOrders() async {
-    return dio.get('/work-orders/my-orders');
+    try {
+      return await dio.get(
+        '/work-orders/my-orders',
+        options: await _authHeaders(),
+      );
+    } on DioException catch (e) {
+      throw Exception('Failed to load work orders: ${e.message}');
+    }
   }
 }
