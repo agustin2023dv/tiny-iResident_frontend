@@ -4,20 +4,20 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
 class AppStyles {
-  static TextTheme get lightTextTheme => TextTheme(
-    bodyLarge: const TextStyle(color: AppColors.textSecondary),
-    bodyMedium: const TextStyle(color: AppColors.textPrimary),
-    titleLarge: const TextStyle(
+  static TextTheme get lightTextTheme => const TextTheme(
+    bodyLarge: TextStyle(color: AppColors.textSecondary),
+    bodyMedium: TextStyle(color: AppColors.textPrimary),
+    titleLarge: TextStyle(
       fontSize: 28,
       fontWeight: FontWeight.bold,
       color: AppColors.textPrimary,
     ),
   );
 
-  static TextTheme get darkTextTheme => TextTheme(
-    bodyLarge: const TextStyle(color: AppColors.darkTextSecondary),
-    bodyMedium: const TextStyle(color: AppColors.darkTextPrimary),
-    titleLarge: const TextStyle(
+  static TextTheme get darkTextTheme => const TextTheme(
+    bodyLarge: TextStyle(color: AppColors.darkTextSecondary),
+    bodyMedium: TextStyle(color: AppColors.darkTextPrimary),
+    titleLarge: TextStyle(
       fontSize: 28,
       fontWeight: FontWeight.bold,
       color: AppColors.darkTextPrimary,
