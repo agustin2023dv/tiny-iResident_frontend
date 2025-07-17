@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tinyiresidentfrontend/core/theme/app_colors.dart';
 import 'package:tinyiresidentfrontend/features/auth/models/auth_state.dart';
 import 'package:tinyiresidentfrontend/features/auth/providers/auth_provider.dart';
+import 'package:tinyiresidentfrontend/core/navigation/app_routes.dart';
+import 'package:tinyiresidentfrontend/core/navigation/navigation_service.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -22,11 +24,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.dispose();
   }
 
-  void _handleLogin() async {
+  Future<void> _handleLogin() async {
     final username = _usernameController.text.trim();
     final password = _passwordController.text;
 
     await ref.read(authProvider.notifier).login(username, password);
+
+    final authState = ref.read(authProvider);
+    if (authState.status == AuthStatus.authenticated) {
+      NavigationService.navigatorKey.currentState?.pushReplacementNamed(
+        AppRoutes.profile,
+      );
+    }
   }
 
   @override

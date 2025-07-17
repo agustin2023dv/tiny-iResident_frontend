@@ -42,6 +42,7 @@ class DioClient {
 
     if (auth) {
       final token = await _secureStorage.getAccessToken();
+
       if (token != null) {
         headers['Authorization'] = 'Bearer $token';
       }

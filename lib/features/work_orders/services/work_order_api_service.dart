@@ -21,7 +21,7 @@ class WorkOrderApiService {
 
   Future<PersonalInfo> fetchPersonalInfo() async {
     try {
-      final response = await dio.get(
+      final response = await dioInstance.get(
         '/work-orders/personal-info',
         options: await _authHeaders(),
       );
@@ -55,7 +55,7 @@ class WorkOrderApiService {
 
       final token = await _secureStorage.getAccessToken();
 
-      return await dio.post(
+      return await dioInstance.post(
         '/work-orders/',
         data: formData,
         options: Options(
@@ -72,7 +72,7 @@ class WorkOrderApiService {
 
   Future<Response> getUserWorkOrders() async {
     try {
-      return await dio.get(
+      return await dioInstance.get(
         '/work-orders/my-orders',
         options: await _authHeaders(),
       );

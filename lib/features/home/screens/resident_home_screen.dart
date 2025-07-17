@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../providers/home_navigation_provider.dart';
-import '../controllers/home_navigation_controller.dart';
-import '../widgets/dashboard_card.dart';
+import 'package:tinyiresidentfrontend/features/user/providers/user_provider.dart';
+import 'package:tinyiresidentfrontend/features/home/controllers/home_navigation_controller.dart';
+import 'package:tinyiresidentfrontend/features/home/providers/home_navigation_provider.dart';
+import 'package:tinyiresidentfrontend/features/home/widgets/dashboard_card.dart';
 
 class ResidentHomeScreen extends ConsumerWidget {
   const ResidentHomeScreen({super.key});
@@ -18,47 +18,56 @@ class ResidentHomeScreen extends ConsumerWidget {
       body: SafeArea(
         child: Column(
           children: [
-            _buildTopBar(),
+            _buildTopBar(ref),
             _buildTitle(theme),
             _buildDashboardGrid(context, nav),
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavBar(),
+      bottomNavigationBar: _buildBottomNavBar(context),
     );
   }
 
-  Widget _buildTopBar() {
+  Widget _buildTopBar(WidgetRef ref) {
+    final userAsync = ref.watch(userProvider);
+
     return Container(
       color: const Color(0xFF003F5C),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Welcome, Liz Hopper',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
+      child: userAsync.when(
+        loading: () => const CircularProgressIndicator(color: Colors.white),
+        error: (err, _) => const Text(
+          'Error loading user',
+          style: TextStyle(color: Colors.white),
+        ),
+        data: (user) => Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Welcome, ${user.firstName} ${user.lastName}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              SizedBox(height: 4),
-              Text(
-                'Resident Services',
-                style: TextStyle(color: Colors.white70, fontSize: 14),
-              ),
-            ],
-          ),
-          CircleAvatar(
-            backgroundColor: Colors.white,
-            radius: 20,
-            child: Icon(Icons.account_circle, color: Color(0xFF003F5C)),
-          ),
-        ],
+                const SizedBox(height: 4),
+                const Text(
+                  'Resident Services',
+                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                ),
+              ],
+            ),
+            const CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 20,
+              child: Icon(Icons.account_circle, color: Color(0xFF003F5C)),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -114,11 +123,29 @@ class ResidentHomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildBottomNavBar() {
+  Widget _buildBottomNavBar(BuildContext context) {
+    final nav = HomeNavigationController();
+
     return BottomNavigationBar(
       currentIndex: 0,
       selectedItemColor: const Color(0xFF003F5C),
       unselectedItemColor: Colors.grey,
+      onTap: (index) {
+        switch (index) {
+          case 0:
+            nav.goToWorkOrder(context);
+            break;
+          case 1:
+            nav.goToRecertification(context);
+            break;
+          case 2:
+            nav.goToInspection(context);
+            break;
+          case 3:
+            nav.goToPackageDelivery(context);
+            break;
+        }
+      },
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.history), label: 'Activity'),

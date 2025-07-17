@@ -1,20 +1,30 @@
-import 'package:dio/dio.dart';
+import 'package:tinyiresidentfrontend/core/config/http_client.dart';
+import 'package:tinyiresidentfrontend/core/utils/secure_storage.dart';
 
 class AuthApiService {
-  final Dio _dio;
+  final DioClient _dioClient;
 
-  AuthApiService(this._dio);
+  AuthApiService(this._dioClient);
 
   Future<Map<String, dynamic>> login(String username, String password) async {
     try {
-      final response = await _dio.post(
+      final response = await _dioClient.post(
         '/auth/token/',
+        auth: false,
         data: {'username': username, 'password': password},
       );
 
+      final access = response.data['access'];
+      final refresh = response.data['refresh'];
+
+      await SecureStorage().saveTokens(
+        accessToken: access,
+        refreshToken: refresh,
+      );
+
       return response.data;
-    } on DioException catch (e) {
-      throw Exception(e.response?.data['detail'] ?? 'Login failed');
+    } catch (e) {
+      throw Exception('Login failed');
     }
   }
 }

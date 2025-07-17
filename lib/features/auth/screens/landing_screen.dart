@@ -6,29 +6,34 @@ class LandingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Color(0xFF1F2A60), // fallback color
+      backgroundColor: Color(0xFF1F2A60),
       body: Stack(
         children: [
           BackgroundDesign(),
           Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Welcome Back!',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Welcome to tini iResident',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      height: 1.3,
+                    ),
                   ),
-                ),
-                SizedBox(height: 12),
-                Text(
-                  'Enter personal details to your\nemployee account',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: Colors.white70),
-                ),
-              ],
+                  SizedBox(height: 16),
+                  Text(
+                    'Your handy app for managing housing, work orders, and more.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, color: Colors.white70),
+                  ),
+                ],
+              ),
             ),
           ),
           _BottomAuthButtons(),
@@ -44,53 +49,61 @@ class _BottomAuthButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 20,
+      bottom: 40,
       left: 20,
       right: 20,
-      child: Container(
-        height: 60,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/login');
-              },
-              child: const Text(
-                'Sign in',
-                style: TextStyle(
-                  color: Colors.blueAccent,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/login');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.blueAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  elevation: 6,
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
                 ),
+                child: const Text('Sign in'),
               ),
             ),
-            const VerticalDivider(
-              width: 1,
-              color: Colors.grey,
-              thickness: 1,
-              indent: 15,
-              endIndent: 15,
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/register');
-              },
-              child: const Text(
-                'Sign up',
-                style: TextStyle(
-                  color: Colors.blueAccent,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: OutlinedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/register');
+                },
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  side: const BorderSide(color: Colors.white12, width: 2),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  elevation: 4,
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
                 ),
+                child: const Text('Sign up'),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -114,26 +127,26 @@ class BackgroundDesign extends StatelessWidget {
           Positioned(
             top: 80,
             left: 20,
-            child: _Circle(size: 80, color: Colors.white, opacity: 0.3),
+            child: _Circle(size: 80, color: Colors.white, opacity: 0.2),
           ),
           Positioned(
-            bottom: 200,
+            bottom: 250,
             right: 20,
-            child: _Circle(size: 90, color: Colors.white, opacity: 0.5),
+            child: _Circle(size: 90, color: Colors.white, opacity: 0.4),
           ),
           Positioned(
-            bottom: 40,
+            bottom: 100,
             left: 70,
             child: _Circle(
               size: 60,
               color: Color.fromARGB(255, 56, 54, 215),
-              opacity: 1.0,
+              opacity: 0.3,
             ),
           ),
           Positioned(
-            bottom: 90,
+            bottom: 40,
             left: 30,
-            child: _Circle(size: 90, color: Colors.blue, opacity: 1.0),
+            child: _Circle(size: 90, color: Colors.blue, opacity: 0.2),
           ),
         ],
       ),
@@ -155,10 +168,7 @@ class _Circle extends StatelessWidget {
       child: Container(
         width: size,
         height: size,
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 100),
-          shape: BoxShape.circle,
-        ),
+        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
       ),
     );
   }

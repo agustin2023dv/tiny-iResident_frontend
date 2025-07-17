@@ -10,6 +10,7 @@ import 'package:tinyiresidentfrontend/core/navigation/navigation_service.dart';
 import 'package:tinyiresidentfrontend/features/auth/screens/landing_screen.dart';
 import 'package:tinyiresidentfrontend/features/auth/screens/login_screen.dart';
 import 'package:tinyiresidentfrontend/features/auth/screens/register_screen.dart';
+import 'package:tinyiresidentfrontend/features/home/screens/resident_home_screen.dart';
 
 // Work Order Screens
 import 'package:tinyiresidentfrontend/features/work_orders/screens/personal_information_step.dart';
@@ -36,6 +37,8 @@ class MyApp extends StatelessWidget {
         AppRoutes.login: (context) => const LoginScreen(),
         AppRoutes.register: (context) => const RegisterScreen(),
         AppRoutes.home: (context) => const LandingScreen(),
+
+        AppRoutes.profile: (context) => const ResidentHomeScreen(),
 
         AppRoutes.workOrderSummary: (context) => const WorkOrderSummaryStep(),
         AppRoutes.workOrderDetails: (context) => const WorkOrderDetailsStep(),

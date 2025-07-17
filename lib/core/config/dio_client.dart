@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-final Dio dio = Dio(
+final Dio dioInstance = Dio(
   BaseOptions(
     baseUrl: 'http://10.0.2.2:8000/api',
     connectTimeout: const Duration(seconds: 10),

@@ -18,6 +18,12 @@ class BottomNavigationWidget extends StatelessWidget {
       currentIndex: currentIndex,
       onTap: onTabChanged,
       type: BottomNavigationBarType.fixed,
+      showSelectedLabels: true,
+      showUnselectedLabels: true,
+      selectedItemColor: Colors.blue,
+      unselectedItemColor: Colors.grey,
+      selectedFontSize: 14,
+      unselectedFontSize: 14,
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.history), label: 'Activity'),
